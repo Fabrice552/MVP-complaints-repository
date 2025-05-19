@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Multi-Step Complaint Form</title>
+  <link rel="stylesheet" href="citizens.css" />
+</head>
+<body>
+
+  <form id="complaintForm" enctype="multipart/form-data">
+
+    <!-- Step 1: Citizen Orientation -->
+    <div class="form-step active" id="step-1">
+      <h2>Step 1: Citizen Orientation</h2>
+      <label>Full Name* <input type="text" name="fullName" required></label>
+      <label>ID Number* <input type="text" name="idNumber" required></label>
+      <label>Date of Birth* <input type="date" name="dob" required></label>
+      <label>Contact Number* <input type="tel" name="contact" required></label>
+      <label>Email* <input type="email" name="email" required></label>
+      <button type="button" onclick="nextStep(1)">Next</button>
+    </div>
+
+    <!-- Step 2: Location Info -->
+    <div class="form-step" id="step-2">
+      <h2>Step 2: Location Information</h2>
+      <label>Province* <input type="text" name="province" required></label>
+      <label>District* <input type="text" name="district" required></label>
+      <label>Sector* <input type="text" name="sector" required></label>
+      <label>Cell* <input type="text" name="cell" required></label>
+      <label>Village* <input type="text" name="village" required></label>
+      <label>Residential Address* <input type="text" name="residentialAddress" required></label>
+      <label>Complaint Location (if different) <input type="text" name="complaintLocation"></label>
+      <button type="button" onclick="prevStep(1)">Previous</button>
+      <button type="button" onclick="nextStep(2)">Next</button>
+    </div>
+
+    <!-- Step 3: Complaint Info -->
+    <div class="form-step" id="step-3">
+      <h2>Step 3: Complaint Details</h2>
+      <label>Category*
+        <select id="category" name="category" required>
+          <option value="">--Choose Category--</option>
+          <option value="public_infrastructure">Public Infrastructure</option>
+          <option value="public_safety">Public Safety & Security</option>
+          <option value="utilities">Utilities</option>
+          <option value="health_sanitation">Health & Sanitation</option>
+          <option value="admin_services">Administrative & Civic Services</option>
+          <option value="environmental_concerns">Environmental Concerns</option>
+          <option value="education_social_services">Education & Social Services</option>
+        </select>
+      </label>
+
+      <div id="subcategory-container"></div>
+
+      <label>Description* <textarea name="description" rows="4" required></textarea></label>
+      <label>Attach proof (optional) <input type="file" name="attachment" accept=".jpg,.jpeg,.png,.pdf"></label>
+       <label for="district">District:</label>
+  <select id="Administrative level">
+    <option value="Gasabo">District</option>
+    <option value="Kicukiro">Sector</option>
+    <option value="Nyarugenge">Cell</option>
+  </select>
+
+      <label>Captcha: <span id="captchaText"></span></label>
+      <input type="text" id="captchaInput" placeholder="Enter captcha" required>
+
+      <button type="button" onclick="prevStep(2)">Previous</button>
+      <button type="submit">Submit</button>
+    </div>
+
+  </form>
+  <section class="chatbox">
+    <h2>Ask Assistant</h2>
+    <div id="chat-log"></div>
+    <input type="text" id="chat-input" placeholder="Ask about services..." />
+    <button onclick="simulateAI()">Send</button>
+  </section>
+
+  <script src="citizens.js"></script>
+</body>
+</html>

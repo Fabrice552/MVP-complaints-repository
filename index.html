@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>The solution MVP</title>
+  <meta name="description" content="Learn is a platform that offers free courses for everyone. Start learning today!" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="./main.css" />
+</head>
+
+<body>
+  <!-- Navbar section -->
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <img src="./images/logo.png" width="300" />
+    </div>
+    <ul class="navbar-items">
+      <li>About Me</li>
+      <li>Journey</li>
+      <a href="dashboard.html">
+        <li>Admin</li>
+      </a>
+     
+    </ul>
+  </nav>
+  <!-- Hero section -->
+  <div class="hero">  
+    <h1>
+      Hello! <br />
+      Welcome to the Public Service Portal</br></h1>
+    <p>This platform enables you to report municipal issues, provide feedback, and track the resolution process efficiently.</p>
+    <a href="citizens.html">
+      <button>GIVE A COMPLAINT</button>
+    </a>
+  </div>
+  <!-- Coding journey section -->
+  <div id="coding-journey" class="journey">
+    <h2>Categories of complaints</h2>
+  
+    <div class="journey-list">
+      <div id="intro" class="journey-card">
+        <img
+          src="/images/public.jpg "
+          class="journey-image"
+          alt="Course Image"
+        />
+        <div>
+          <h3>Public Infrastructure</h3>
+          <p>
+            Road damage<br />
+            Street lighting issues <br />
+            Traffic sign problems <br />
+            Public transportation issues <br />
+            Sidewalk or pedestrian pathway problems <br />
+            Traffic signal malfunctions <br />
+            Public transportation delays or problems <br />
+            
+          </p>
+        </div>
+      </div>
+  
+      <div id="html" class="journey-card">
+        <img src="/images/security.jpg" class="journey-image" alt="Course Image" />
+        <div>
+          <h3> Public Safety & Security</h3>
+          <p>
+           Noise complaints<br />
+           Illegal dumping or littering<br />
+           Public health concerns <br />
+           Unsafe building or construction site<br />    
+           Street crime reports <br  />
+           Fire hazards or violations<br />
+           Animal control issues  <br />
+        </div>
+      </div>
+  
+      <div id="react" class="journey-card">
+        <img src="/images/utilities.jpg" class="journey-image" alt="Course Image" />
+        <div>
+          <h3>Utilities</h3>
+          <p>  
+           Electricity outages or fluctuations<br />
+           Gas leaks or smell<br />
+           Water billing or meter issues<br />
+           Waste management problems (bin collection, recycling)<br />
+          </p>
+        </div>
+      </div>
+  
+      <div id="backend" class="journey-card">
+        <img src="/images/health.jpeg"
+        " class="journey-image" alt="Course Image" />
+        <div>
+          <h3>Health & Sanitation</h3>
+          <p>
+            Food safety complaints (restaurants, markets)<br />
+            Pest infestations (rodents, mosquitoes)<br />
+            Public toilet hygiene<br />
+            pollution<br /> 
+          </p>
+        </div>
+      </div>
+  
+      <div id="css" class="journey-card">
+        <img src="/images/environment.jpg" class="journey-image" alt="Course Image" />
+        <div>
+          <h3>Environmental Concerns</h3>
+          <p>
+            Illegal dumping or littering<br />
+            Wildlife protection issues<br />
+            Green space maintenance<br />
+            Urban heat island effect<br />
+            Flooding or waterlogging<br />
+            Erosion or landslides<br />
+            Air quality concerns (smog, dust)<br />
+          </p>
+        </div>
+      </div>
+      <div id="js" class="journey-card">
+        <img src="/images/education.jpg" class="journey-image" alt="Course Image" />
+        <div>
+          <h3>Education & Community Services</h3>
+          <p>
+            School safety concerns<br />
+            Community center issues<br />
+            Library services complaints<br />
+            Youth program feedback<br />
+            Adult education program feedback<br />
+          </p>
+        </div>
+    </div>
+  </div>
+    
+   
+  <!-- Footer section -->
+  <footer>
+    <p>Rwanda Governance Board</p>
+  </footer>
+  <script src="./script.js"></script>
+  <script>
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
+let complaints = [];
+let responses = [];
+let admins = [{ username: 'admin', password: 'password' }];
+
+// Submit complaint
+app.post('/api/complaints', (req, res) => {
+  const complaint = { ...req.body, id: Date.now().toString(), status: 'new' };
+  complaints.push(complaint);
+  res.json({ message: 'Complaint received', complaint });
+});
+
+// Get all complaints (admin)
+app.get('/api/complaints', (req, res) => {
+  res.json(complaints);
+});
+
+// Update complaint status and add response
+app.post('/api/complaints/:id/respond', (req, res) => {
+  const { id } = req.params;
+  const { status, response, method } = req.body;
+  const complaint = complaints.find(c => c.id === id);
+  if (complaint) {
+    complaint.status = status;
+    responses.push({ complaintId: id, response, method });
+    res.json({ message: 'Response submitted', complaint });
+  } else {
+    res.status(404).json({ message: 'Complaint not found' });
+  }
+});
+
+// Admin login
+app.post('/api/admin/login', (req, res) => {
+  const { username, password } = req.body;
+  const admin = admins.find(a => a.username === username && a.password === password);
+  if (admin) {
+    res.json({ success: true });
+  } else {
+    res.status(401).json({ success: false, message: 'Invalid credentials' });
+  }
+});
+
+app.listen(4000, () => console.log('Backend running on http://localhost:4000'));
+</script>
+</body>
+</html>
